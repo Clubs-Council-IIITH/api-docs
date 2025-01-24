@@ -1,0 +1,62 @@
+site_name: SLC Tech Documentation
+
+theme:
+  name: "material"
+  features:
+    - search.suggest
+    - search.share
+  logo: assets/logo-darkmode.svg
+
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings:
+        handlers:
+            python:
+                paths: ["services"]
+
+nav:
+  - Home: index.md
+  - Frontend: web.md
+  - Subgraphs:
+      - Clubs:
+          - Home: subgraphs/clubs/index.md
+          - Main: subgraphs/clubs/main.md
+          - Models: subgraphs/clubs/models.md
+          - Queries: subgraphs/clubs/queries.md
+          - Mutations: subgraphs/clubs/mutations.md
+          - Utils: subgraphs/clubs/utils.md
+
+      - Events:
+          - Home: subgraphs/events/index.md
+          - Main: subgraphs/events/main.md
+          - Models: subgraphs/events/models.md
+          - Queries: subgraphs/events/queries.md
+          - Mutations: subgraphs/events/mutations.md
+          - Utils: subgraphs/events/utils.md
+          - Mailing: subgraphs/events/mailing.md
+
+      - Interfaces:
+          - Home: subgraphs/interfaces/index.md
+          - Main: subgraphs/interfaces/main.md
+          - Models: subgraphs/interfaces/models.md
+          - Queries: subgraphs/interfaces/queries.md
+          - Mutations: subgraphs/interfaces/mutations.md
+          - Utils: subgraphs/interfaces/utils.md
+          - Mailing: subgraphs/interfaces/mailing.md
+
+      - Members:
+          - Home: subgraphs/members/index.md
+          - Main: subgraphs/members/main.md
+          - Models: subgraphs/members/models.md
+          - Queries: subgraphs/members/queries.md
+          - Mutations: subgraphs/members/mutations.md
+          - Utils: subgraphs/members/utils.md
+
+      - Users:
+          - Home: subgraphs/users/index.md
+          - Main: subgraphs/users/main.md
+          - Models: subgraphs/users/models.md
+          - Queries: subgraphs/users/queries.md
+          - Mutations: subgraphs/users/mutations.md
+          - Utils: subgraphs/users/utils.md
