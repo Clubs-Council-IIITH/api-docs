@@ -93,12 +93,14 @@ def run_build(app, build_dir: str = "/build", services_dir: str = "/services"):
             return {"message": "Update Successful!!"}
         else:
             # If the build fails, return the error
+            print("Build failed: ", result.stderr)
             return JSONResponse(
                 content={"error": "Build failed", "details": result.stderr},
                 status_code=500,
             )
     else:
         # If the git clone fails, return the error
+        print("Git clone failed: ", stderr)
         return JSONResponse(
             content={"error": "Git clone failed", "details": stderr},
             status_code=500,
