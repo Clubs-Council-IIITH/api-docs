@@ -1,0 +1,24 @@
+volumes:
+  services:
+  build:
+
+services:
+  docs:
+    build: ./
+    ports:
+      - 8000:8000
+    volumes:
+      - services:/services
+      - build:/build
+      - ./.ssh:/root/.ssh
+    networks:
+      custom_net:
+        ipv4_address: 170.20.1.2
+
+networks:
+  custom_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 170.20.1.0/16
+          gateway: 170.20.1.1
