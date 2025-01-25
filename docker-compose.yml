@@ -5,6 +5,7 @@ services:
       - 8000:8000
     volumes:
       - ./ssh:/root/.ssh
+      - ./allowed_users.txt:/app/allowed_users.txt
     env_file:
       - .env
     networks:

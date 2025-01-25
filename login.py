@@ -28,10 +28,6 @@ cas_client = CASClient(
     server_url=CAS_SERVER_URL,
 )
 
-allowed_users = []
-with open("allowed_users.txt") as f:
-    allowed_users = f.read().splitlines()
-
 
 @router.post("/login")
 @router.get("/login")
@@ -69,6 +65,9 @@ async def login(request: Request, back_to: Optional[str] = None):
     print(
         f"CAS verify ticket response: user: {user}, attributes: {attributes}, pgtiou: {pgtiou}"
     )
+
+    with open("allowed_users.txt") as f:
+        allowed_users = f.read().splitlines()
 
     if not user:
         return RedirectResponse(REDIRECT_URL)
