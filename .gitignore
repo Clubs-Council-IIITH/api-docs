@@ -3,4 +3,3 @@ build/
 .ssh/
 .venv/
 services
-docs/
