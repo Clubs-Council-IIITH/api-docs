@@ -1,5 +1,5 @@
 from os import getenv
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Response
 from fastapi.responses import RedirectResponse
 
 from typing import Optional
@@ -83,6 +83,17 @@ async def login(request: Request, back_to: Optional[str] = None):
         )
         return response
 
+@router.get("/logoutCallback")
+def logout_callback(response: Response):
+    response.delete_cookie("Authorization")
+    return RedirectResponse(REDIRECT_URL)
+
+@router.get("/logout")
+def logout(request: Request):
+    redirect_url = request.url_for("logout_callback")
+    cas_logout_url = cas_client.get_logout_url(redirect_url)
+    return RedirectResponse(cas_logout_url)
+    
 
 def validate_token(token: str):
     try:
