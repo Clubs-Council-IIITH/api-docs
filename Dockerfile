@@ -14,6 +14,9 @@ WORKDIR /app
 ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY --from=python_cache /venv /venv
+
+RUN apt-get update && apt-get install -y wget git openssh-client
+# RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+
 COPY . .
-RUN mkdocs build -d /build
 ENTRYPOINT [ "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" ]

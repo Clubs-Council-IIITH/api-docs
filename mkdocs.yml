@@ -13,7 +13,7 @@ plugins:
   - mkdocstrings:
         handlers:
             python:
-                paths: ["services"]
+                paths: ["/services"]
 
 nav:
   - Home: index.md
@@ -35,7 +35,7 @@ nav:
           - Mutations: subgraphs/events/mutations.md
           - Utils: subgraphs/events/utils.md
           - Mailing: subgraphs/events/mailing.md
-
+      
       - Interfaces:
           - Home: subgraphs/interfaces/index.md
           - Main: subgraphs/interfaces/main.md

@@ -5,6 +5,11 @@ volumes:
 services:
   docs:
     build: ./
+    volumes:
+      - services:/services
+      - build:/build
+      - ./.ssh:/root/.ssh
+      - ./:/app
     ports:
       - 8000:8000
     networks:
