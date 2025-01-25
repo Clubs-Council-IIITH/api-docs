@@ -77,12 +77,16 @@ def run_build(app, build_dir: str = "/build", services_dir: str = "/services"):
     if returncode == 0:
         # Run the mkdocs build command
         result = subprocess.run(
-            ["mkdocs", "build", "-d", build_dir], capture_output=True, text=True
+            ["mkdocs", "build", "-d", build_dir+"_temp"], capture_output=True, text=True
         )
 
         # print("Build Result: ", result)
 
         if result.returncode == 0:
+            # Move the new temp to build
+            os.system(f"mv {build_dir}_temp {build_dir}")
+            os.system(f"rm -rf {build_dir}_temp")
+            
             # If the build is successful, remount the static files
             app.router.routes = [
                 route
