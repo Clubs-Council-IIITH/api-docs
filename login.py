@@ -37,14 +37,14 @@ cas_client = CASClient(
 @router.post("/login/{back_to:path}")
 async def login(request: Request, back_to: Optional[str] = None):
     path = back_to or request.url.path
-    print(f"path: {path}")
+    # print(f"path: {path}")
 
     # Already logged in
     if request.cookies.get("Authorization"):
         return RedirectResponse(path or REDIRECT_URL)
 
     next = request.query_params.get("next") or None
-    print(f"next: {next}")
+    # print(f"next: {next}")
 
     cas_client.service_url = service_url_formatted % (
         SERVICE_URL,
@@ -56,15 +56,14 @@ async def login(request: Request, back_to: Optional[str] = None):
     if not ticket:
         # No ticket, the request come from end user, send to CAS login
         cas_login_url = cas_client.get_login_url()
-        print(f"CAS login URL: {cas_login_url}")
         return RedirectResponse(cas_login_url)
 
     # Validate CAS ticket
     user, attributes, pgtiou = cas_client.verify_ticket(ticket)
     uid = attributes["uid"]
-    print(
-        f"CAS verify ticket response: user: {user}, attributes: {attributes}, pgtiou: {pgtiou}"
-    )
+    # print(
+    #     f"CAS verify ticket response: user: {user}, attributes: {attributes}, pgtiou: {pgtiou}"
+    # )
 
     with open("allowed_users.txt") as f:
         allowed_users = f.read().splitlines()
