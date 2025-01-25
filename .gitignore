@@ -2,4 +2,3 @@ build/
 **__pycache__**
 .ssh/
 .venv/
-services
