@@ -11,11 +11,13 @@ RUN pip install -r requirements.txt
 FROM python:3.12-slim AS build
 EXPOSE 8000
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y wget git openssh-client
+
 ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY --from=python_cache /venv /venv
 
-RUN apt-get update && apt-get install -y wget git openssh-client
 # RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 COPY . .

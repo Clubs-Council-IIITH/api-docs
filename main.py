@@ -1,18 +1,23 @@
-from os import getenv, path
-import os
-import subprocess
+from os import getenv
+import json
 
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, status, Request, Response, Header, HTTPException
+from fastapi.responses import RedirectResponse
 
-DEBUG = getenv("BACKEND_DEBUG", "True").lower() in ("true", "1", "t")
+from utils import run_build, verify_signature
+from login import router as login_router, validate_token
+
+DEBUG = getenv("BACKEND_DEBUG", "False").lower() in ("true", "1", "t")
+WEBHOOK_SECRET = getenv("WEBHOOK_SECRET")
+BUILD_DIR = getenv("BUILD_DIR", "/app/build")
+SERVICES_DIR = getenv("SERVICES_DIR", "/app/services")
 
 if DEBUG:
     app = FastAPI(
         debug=DEBUG,
         title="SLC Tech Documentation",
         description="SLC Tech Documentation System",
+        # lifespan=lifespan,
     )
 else:
     app = FastAPI(
@@ -21,87 +26,66 @@ else:
         description="SLC Tech Documentation System",
         docs_url=None,
         redoc_url=None,
+        # lifespan=lifespan,
     )
 
 
 # Backend Index Page - For checking purposes
-@app.get("/ping", tags=["General"])
+@app.get("/ping", tags=["General"], status_code=status.HTTP_200_OK)
 async def index():
     return {"message": "Backend Running!!"}
 
 
-@app.post("/update", tags=["Admin"])
-async def update1():
-    # Git Clone
-    result_git = subprocess.run(
-        [
-            "git",
-            "clone",
-            "-j8",
-            "--recurse-submodules",
-            "--remote-submodules",
-            "git@github.com:Clubs-Council-IIITH/services.git",
-            "/services",
-        ],
-        capture_output=True,
-        text=True,
-    )
+@app.post("/webhook", tags=["Admin"], status_code=status.HTTP_204_NO_CONTENT)
+async def webhook(
+    request: Request,
+    x_hub_signature_256: str = Header(None),
+):
+    """
+    GitHub webhook handler to trigger run_build on push events to the master branch.
+    """
+    # Get raw payload
+    payload = await request.body()
 
-    # print(result_git)
-    returncode = result_git.returncode
-    stderr = result_git.stderr
+    # Validate webhook signature
+    verify_signature(payload, WEBHOOK_SECRET, x_hub_signature_256)
 
-    if returncode != 0 and "already exists" in stderr:
-        curr_dir = os.getcwd()
-        os.chdir("/services")
+    # Parse JSON payload
+    try:
+        event_data = json.loads(payload)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Invalid JSON payload!")
 
-        subprocess.run(
-            ["git", "pull", "origin", "master"], capture_output=True, text=True
-        )
+    # Check if it's a push event on the master branch
+    if event_data.get("ref") == "refs/heads/master" and event_data.get("pusher"):
+        before = event_data.get("before")
+        after = event_data.get("after")
+        print(f"Updated commit code: {before} -> {after}")
+        run_build(app, BUILD_DIR, SERVICES_DIR)
 
-        result_pull = subprocess.run(
-            ["git", "submodule", "foreach", "git", "pull", "origin", "master"],
-            capture_output=True,
-            text=True,
-        )
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-        os.chdir(curr_dir)
 
-        # print(result_pull)
-        returncode = result_pull.returncode
-        stderr = result_pull.stderr
+@app.on_event("startup")
+async def startup_event():
+    run_build(app, BUILD_DIR, SERVICES_DIR)
 
-    if returncode == 0:
-        # Run the mkdocs build command
-        result = subprocess.run(
-            ["mkdocs", "build", "-d", "/build"], capture_output=True, text=True
-        )
 
-        # print("Build Result: ", result)
-
-        if result.returncode == 0:
-            # If the build is successful, remount the static files
-            app.router.routes = [
-                route
-                for route in app.router.routes
-                if not (hasattr(route, "name") and route.name == "static")
-            ]
-            app.mount("/", StaticFiles(directory="/build", html=True), name="static")
-            return {"message": "Update Successful!!"}
-        else:
-            # If the build fails, return the error
-            return JSONResponse(
-                content={"error": "Build failed", "details": result.stderr},
-                status_code=500,
+@app.middleware("http")
+async def check_login(request: Request, call_next):
+    if request.url.path.startswith("/apis"):
+        token = request.cookies.get("Authorization")
+        if not token:
+            return RedirectResponse(f"/login{request.url.path}")
+        uid = validate_token(token)
+        if not uid:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token",
             )
-    else:
-        # If the git clone fails, return the error
-        return JSONResponse(
-            content={"error": "Git clone failed", "details": stderr},
-            status_code=500,
-        )
+
+    response = await call_next(request)
+    return response
 
 
-# Host /build directory as static files
-if path.exists("/build"):
-    app.mount("/", StaticFiles(directory="/build", html=True), name="static")
+app.include_router(login_router)

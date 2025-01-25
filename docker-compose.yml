@@ -1,14 +1,28 @@
-volumes:
-  services:
-  build:
-
 services:
   docs:
     build: ./
     ports:
       - 8000:8000
     volumes:
-      - services:/services
-      - build:/build
-      - ./.ssh:/root/.ssh
-      - ./:/app
+      - ./ssh:/root/.ssh
+    env_file:
+      - .env
+    networks:
+      custom_net:
+        ipv4_address: 170.20.0.2
+  
+  smee:
+    build: ./smee
+    env_file:
+      - .env
+    networks:
+      custom_net:
+        ipv4_address: 170.20.0.4
+
+networks:
+  custom_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 170.20.0.0/16
+          gateway: 170.20.0.1
