@@ -63,7 +63,7 @@ def run_build(app, build_dir: str = "/build", services_dir: str = "/services"):
         )
 
         result_pull = subprocess.run(
-            ["git", "submodule", "foreach", "git", "pull", "origin", "master"],
+            ["git", "submodule", "update", "--recursive"],
             capture_output=True,
             text=True,
         )
