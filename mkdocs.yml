@@ -1,4 +1,11 @@
 site_name: SLC Tech Documentation
+copyright: Copyright &copy; 2025 SLC Tech Team
+repo_url: https://github.com/Clubs-Council-IIITH/services
+repo_name: Clubs-Council-IIITH/services
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Clubs-Council-IIITH
 
 theme:
   name: "material"
@@ -6,6 +13,28 @@ theme:
     - search.suggest
     - search.share
   logo: assets/logo-darkmode.svg
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
 
 plugins:
   - search
