@@ -1,4 +1,5 @@
 site_name: SLC Tech Documentation
+site_author: SLC Tech Team
 copyright: Copyright &copy; 2025 SLC Tech Team
 repo_url: https://github.com/Clubs-Council-IIITH/services
 repo_name: Clubs-Council-IIITH/services
@@ -6,6 +7,8 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Clubs-Council-IIITH
+    - icon: fontawesome/brands/git-alt
+      link: https://github.com/Clubs-Council-IIITH/api-docs
 
 theme:
   name: "material"

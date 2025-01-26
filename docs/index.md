@@ -7,7 +7,8 @@ hide:
 
 # SLC Tech Team Documentation Site
 
-About SLC Tech Team: [SLC Tech Team Page](https://clubs.iiit.ac.in/tech-team) 
+About SLC Tech Team: [SLC Tech Team Page](https://clubs.iiit.ac.in/tech-team)
+
 GitHub Organisation: [SLC Tech Team GitHub](https://github.com/Clubs-Council-IIITH)
 
 ##  Deployment Status
