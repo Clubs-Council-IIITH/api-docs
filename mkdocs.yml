@@ -39,6 +39,9 @@ theme:
 plugins:
   - search
   - autorefs
+  - macros:
+      include_dir: "/app/services"
+
   - mkdocstrings:
         handlers:
             python:
@@ -46,7 +49,7 @@ plugins:
 
 nav:
   - Home: index.md
-  - Frontend: web.md
+  - Frontend: frontend/index.md
   - Subgraphs:
       - Clubs:
           - Home: subgraphs/clubs/index.md
@@ -64,7 +67,7 @@ nav:
           - Mutations: subgraphs/events/mutations.md
           - Utils: subgraphs/events/utils.md
           - Mailing: subgraphs/events/mailing.md
-      
+
       - Interfaces:
           - Home: subgraphs/interfaces/index.md
           - Main: subgraphs/interfaces/main.md
@@ -89,7 +92,7 @@ nav:
           - Queries: subgraphs/users/queries.md
           - Mutations: subgraphs/users/mutations.md
           - Utils: subgraphs/users/utils.md
-  
+
   - Apis:
       - Auth: apis/auth.md
       - "Auth Dev": apis/auth-dev.md
