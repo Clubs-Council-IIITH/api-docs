@@ -49,13 +49,13 @@ extra_css:
 plugins:
   - search
   - autorefs
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["/app/services"]
   - macros:
       include_dir: "/app/services"
-
-  - mkdocstrings:
-        handlers:
-            python:
-                paths: ["/app/services"]
+      module_name: macros
 
 nav:
   - Home: index.md
