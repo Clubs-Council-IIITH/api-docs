@@ -84,6 +84,7 @@ def run_build(app, build_dir: str = "/build", services_dir: str = "/services"):
 
         if result.returncode == 0:
             # Move the new temp to build
+            os.makedirs(build_dir, exist_ok=True)
             os.system(f"mv {build_dir}_temp/* {build_dir}/")
             os.system(f"rm -rf {build_dir}_temp")
             
