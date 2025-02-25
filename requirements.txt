@@ -1,5 +1,5 @@
 mkdocs
-mkdocstrings[python]===0.27.0
+mkdocstrings[python]
 mkdocs-material
 mkdocs-macros-plugin
 fastapi==0.115.5
