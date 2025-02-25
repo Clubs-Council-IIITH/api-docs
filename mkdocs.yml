@@ -107,6 +107,12 @@ nav:
           - Utils: subgraphs/users/utils.md
 
   - Apis:
-      - Auth: apis/auth.md
-      - "Auth Dev": apis/auth-dev.md
-      - Files: apis/files.md
+      - Auth: 
+          - Home: apis/auth/index.md
+          - APIs: apis/auth/auth.md
+      - "Auth Dev":
+          - Home: apis/auth-dev/index.md
+          - APIs: apis/auth-dev/auth-dev.md
+      - Files:
+          - Home: apis/files/index.md
+          - APIs: apis/files/files.md
