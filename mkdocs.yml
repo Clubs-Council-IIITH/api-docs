@@ -80,6 +80,7 @@ nav:
           - Mutations: subgraphs/events/mutations.md
           - Utils: subgraphs/events/utils.md
           - Mailing: subgraphs/events/mailing.md
+          - Auto Reminders: subgraphs/events/auto-reminders.md
 
       - Interfaces:
           - Home: subgraphs/interfaces/index.md
