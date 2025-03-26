@@ -1,0 +1,29 @@
+@startuml
+skinparam linetype ortho
+skinparam defaultTextAlignment center
+
+title Club Management Workflow\n(Access: cc, club)
+
+start
+
+fork
+:Login to Club account;
+:Navigate to "Manage";
+:Select Clubs;
+:Edit Club details;
+fork again
+:login to Clubs Council;
+:Navigate to "Manage";
+:Select Clubs;
+:View Clubs List;
+fork
+    :Add New Club;
+    :Provide Details;
+    :Submit for Approval;
+fork again
+    :View/Edit Club Details;
+end fork
+end fork
+
+stop
+@enduml

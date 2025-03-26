@@ -1,0 +1,39 @@
+@startuml
+skinparam linetype ortho
+skinparam defaultTextAlignment center
+
+title Member Management Workflow\n(Access: cc, club)
+
+start
+
+:Login to Club's Account;
+:Navigate to "Manage";
+:Select Members;
+
+fork
+    :Add New Member;
+    :Provide Details;
+    :Submit for Approval;
+    :CC Reviews;
+if (Approved?) then (Yes)
+    :Member Approved;
+else (No)
+    :Member Rejected;
+endif
+fork again
+    :View Members List;
+    :View Specific Member;
+fork again
+    :View Members List;
+    :Edit Member Details;
+    :Submit Changes;
+    :CC Reviews;
+if (Approved?) then (Yes)
+    :Change Approved;
+else (No)
+    :Change Rejected;
+endif
+end fork
+
+stop
+@enduml

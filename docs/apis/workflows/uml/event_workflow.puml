@@ -1,0 +1,44 @@
+@startuml
+skinparam linetype ortho
+skinparam defaultTextAlignment center
+
+title Event Management Workflow\n(Access: cc, club, slc, slo)
+
+start
+
+:Login to Club's Account;
+:Navigate to "Manage";
+:Select Events;
+
+fork
+    :Add New Event;
+    :Provide Details;
+    :Submit for Approval;
+:CC Reviews;
+if (Approved?) then (Yes)
+    :Event Approved;
+else (No)
+    :Event Rejected with Reason;
+endif
+
+fork again
+    :View Events List;
+    :View Specific Event;
+fork again
+    :View Events List;
+    :Edit Event Details;
+    :Submit Changes;
+:CC Reviews;
+if (Approved?) then (Yes)
+    :Event Approved;
+else (No)
+    :Event Rejected with Reason;
+endif
+
+fork again
+    :View Events List;
+    :Create/Submit Report;
+end fork
+
+stop
+@enduml
