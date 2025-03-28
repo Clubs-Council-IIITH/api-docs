@@ -106,6 +106,9 @@ nav:
           - Queries: subgraphs/users/queries.md
           - Mutations: subgraphs/users/mutations.md
           - Utils: subgraphs/users/utils.md
+  
+  - Workflows:
+    - "Workflow Diagrams": workflows/index.md
 
   - Apis:
       - Auth: 
