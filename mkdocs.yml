@@ -106,12 +106,12 @@ nav:
           - Queries: subgraphs/users/queries.md
           - Mutations: subgraphs/users/mutations.md
           - Utils: subgraphs/users/utils.md
-  
-  - Workflows:
-    - "Workflow Diagrams": workflows/index.md
+
+      - Workflows:
+          - "Workflow Diagrams": subgraphs/workflows/index.md
 
   - Apis:
-      - Auth: 
+      - Auth:
           - Home: apis/auth/index.md
           - APIs: apis/auth/auth.md
       - "Auth Dev":
