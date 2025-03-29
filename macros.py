@@ -1,7 +1,11 @@
+from datetime import datetime
+import pytz
+
+
 def define_env(env):
     # get mkdocstrings' Python handler
     python_handler = env.conf["plugins"]["mkdocstrings"].get_handler("python")
- 
+
     # get the `update_env` method of the Python handler
     update_env = python_handler.update_env
 
@@ -18,6 +22,11 @@ def define_env(env):
 
         # patch the filter
         python_handler.env.filters["convert_markdown"] = render_convert
-    
+
     # patch the method
     python_handler.update_env = patched_update_env
+
+    timezone = pytz.timezone("Asia/Kolkata")
+    env.variables["build_date"] = datetime.now(timezone).strftime(
+        "%A, %B %d, %Y at %I:%M %p"
+    )

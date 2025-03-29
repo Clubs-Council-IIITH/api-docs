@@ -118,5 +118,7 @@ Website `v2` released in April, 2023.
 
 ---
 
+Currently deployed version: [#{{ git.short_commit}}](https://github.com/Clubs-Council-IIITH/api-docs/commit/{{ git.short_commit}}) <br/>
+Last Updated: {{ build_date }}
+
 Built with [MkDocs](https://www.mkdocs.org).
-Currently deployed version: [#{{ git.short_commit}}](https://github.com/Clubs-Council-IIITH/api-docs/commit/{{ git.short_commit}})
