@@ -1,0 +1,29 @@
+@startuml
+skinparam linetype ortho
+skinparam defaultTextAlignment center
+
+title Finance Management Workflow\n(Access: slo, cc, club)
+
+start
+
+:Login to Account;
+:Navigate to "Manage";
+:Go to "Events";
+:Select Specific Event;
+:View Event Details;
+
+fork
+    :View Event Bill Status;
+fork again
+    if (Event Approved & Past?) then (Yes)
+fork
+:Add Bill;
+fork again
+:Edit Bill Status;
+end fork
+    else (No)
+    endif
+end fork
+
+stop
+@enduml

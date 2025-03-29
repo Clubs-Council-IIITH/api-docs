@@ -64,6 +64,9 @@ nav:
   - About Us: "https://clubs.iiit.ac.in/tech-team"
   - Frontend: frontend/index.md
   - Subgraphs:
+      - Workflows:
+          - "Workflow Diagrams": subgraphs/workflows/index.md
+
       - Clubs:
           - Home: subgraphs/clubs/index.md
           - Main: subgraphs/clubs/main.md
@@ -108,7 +111,7 @@ nav:
           - Utils: subgraphs/users/utils.md
 
   - Apis:
-      - Auth: 
+      - Auth:
           - Home: apis/auth/index.md
           - APIs: apis/auth/auth.md
       - "Auth Dev":
