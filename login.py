@@ -1,5 +1,5 @@
 from os import getenv
-from fastapi import APIRouter, Request, Response
+from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
 from typing import Optional
@@ -41,6 +41,8 @@ async def login(request: Request, back_to: Optional[str] = None):
 
     # Already logged in
     if request.cookies.get("Authorization"):
+        if path.startswith("/login"):
+            return RedirectResponse(REDIRECT_URL)
         return RedirectResponse(path or REDIRECT_URL)
 
     next = request.query_params.get("next") or None
@@ -83,7 +85,21 @@ async def login(request: Request, back_to: Optional[str] = None):
         )
         return response
 
+
 @router.get("/logout")
+def logout():
+    if not SERVICE_URL:
+        raise ValueError("SERVICE_URL is not set in environment variables")
+    elif SERVICE_URL.endswith("/login"):
+        base_service_url = SERVICE_URL[:-6]
+    else:
+        base_service_url = SERVICE_URL
+    redirect_url = f"{base_service_url}/logoutCallback"
+    cas_logout_url = cas_client.get_logout_url(redirect_url)
+    return RedirectResponse(cas_logout_url)
+
+
+@router.get("/logoutCallback")
 def logout_callback():
     response = RedirectResponse(REDIRECT_URL)
     response.delete_cookie("Authorization")
