@@ -84,9 +84,10 @@ async def login(request: Request, back_to: Optional[str] = None):
         return response
 
 @router.get("/logout")
-def logout_callback(response: Response):
+def logout_callback():
+    response = RedirectResponse(REDIRECT_URL)
     response.delete_cookie("Authorization")
-    return RedirectResponse(REDIRECT_URL)
+    return response
 
 
 def validate_token(token: str):
