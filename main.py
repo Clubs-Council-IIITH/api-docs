@@ -76,7 +76,7 @@ async def check_login(request: Request, call_next):
     if request.url.path.startswith("/apis"):
         token = request.cookies.get("Authorization")
         if not token:
-            return RedirectResponse(f"/login?redirect={request.url.path}")
+            return RedirectResponse(f"/login/{request.url.path}")
         
         valid_uid = validate_token(token)
         if not valid_uid:
