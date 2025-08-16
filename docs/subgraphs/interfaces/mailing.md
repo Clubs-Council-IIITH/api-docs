@@ -1,2 +1,2 @@
-::: subgraphs.events.mailing
-::: subgraphs.events.mailing_templates
+::: subgraphs.interfaces.mailing
+::: subgraphs.interfaces.mailing_templates
