@@ -67,12 +67,7 @@ async def login(request: Request, back_to: Optional[str] = None):
     #     f"CAS verify ticket response: user: {user}, attributes: {attributes}, pgtiou: {pgtiou}"
     # )
 
-    with open("allowed_users.txt") as f:
-        allowed_users = f.read().splitlines()
-
     if not user:
-        return RedirectResponse(REDIRECT_URL)
-    elif uid not in allowed_users:
         return RedirectResponse(REDIRECT_URL)
     else:
         token = encode({"uid": uid}, JWT_SECRET, algorithm="HS256")
@@ -106,9 +101,13 @@ def logout_callback():
     return response
 
 
-def validate_token(token: str):
+def validate_token(token: str) -> bool:
     try:
         payload = decode(token, JWT_SECRET, algorithms=["HS256"])
-        return payload.get("uid")
+
+        with open("allowed_users.txt") as f:
+            allowed_users = f.read().splitlines()
+
+        return payload.get("uid") in allowed_users
     except:
-        return None
+        return False

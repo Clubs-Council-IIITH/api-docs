@@ -2,7 +2,7 @@ from os import getenv
 import json
 
 from fastapi import FastAPI, status, Request, Response, Header, HTTPException
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 from utils import run_build, verify_signature
 from login import router as login_router, validate_token
@@ -76,13 +76,48 @@ async def check_login(request: Request, call_next):
     if request.url.path.startswith("/apis"):
         token = request.cookies.get("Authorization")
         if not token:
-            return RedirectResponse(f"/login{request.url.path}")
-        uid = validate_token(token)
-        if not uid:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token",
-            )
+            return RedirectResponse(f"/login?redirect={request.url.path}")
+        
+        valid_uid = validate_token(token)
+        if not valid_uid:
+            html_content = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Access Denied</title>
+                <meta http-equiv="refresh" content="5;url=/">
+                <style>
+                    body {{ font-family: Arial, sans-serif; text-align: center; margin-top: 100px; background-color: #f8f9fa; }}
+                    .error-container {{ max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
+                    .go-back-btn {{ background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }}
+                    .countdown {{ color: #666; margin-top: 10px; }}
+                </style>
+                <script>
+                    let countdown = 5;
+                    function updateCountdown() {{
+                        document.getElementById('countdown').innerText = countdown;
+                        countdown--;
+                        if (countdown < 0) {{
+                            window.location.href = '/';
+                        }}
+                    }}
+                    setInterval(updateCountdown, 1000);
+                </script>
+            </head>
+            <body onload="updateCountdown()">
+                <div class="error-container">
+                    <h1>🔒 Access Denied</h1>
+                    <p><strong>You are not allowed to visit this page.</strong></p>
+                    <p>This content is part of internal documentation and requires special authorization.</p>
+                    <p>Only users with limited access permissions can view this resource.</p>
+                    <p><em>Attempted path: {request.url.path}</em></p>
+                    <a href="/" class="go-back-btn">Go Back to Home</a>
+                    <p class="countdown">Redirecting automatically in <span id="countdown">5</span> seconds...</p>
+                </div>
+            </body>
+            </html>
+            """
+            return HTMLResponse(content=html_content, status_code=403)
 
     response = await call_next(request)
     return response
