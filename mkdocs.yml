@@ -55,6 +55,17 @@ plugins:
       handlers:
         python:
           paths: ["/app/services"]
+          options:
+            docstring_style: google
+            show_signature_annotations: true
+            show_signature_type_parameters: true
+            signature_crossrefs: true
+          import:
+            - url: https://docs.python.org/3/objects.inv
+              domains: [py, std]
+            - url: https://typing-extensions.readthedocs.io/en/latest/objects.inv
+            - url: https://docs.pydantic.dev/latest/objects.inv
+
   - macros:
       include_dir: "/app/services"
       module_name: macros
