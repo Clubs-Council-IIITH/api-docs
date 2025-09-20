@@ -65,6 +65,7 @@ plugins:
               domains: [py, std]
             - url: https://typing-extensions.readthedocs.io/en/latest/objects.inv
             - url: https://docs.pydantic.dev/latest/objects.inv
+            - url: https://fastapi.tiangolo.com/objects.inv
 
   - macros:
       include_dir: "/app/services"
